@@ -13,8 +13,8 @@ class Face {
   Face(int id, Rectangle r) {
     this.id = id;
     this.r = r;
-    this.timer = 20;
-    this.state = LOOKING;
+    this.timer = 15;
+    this.state = CHECK;
   }
   
   void update(Rectangle r) {
@@ -31,8 +31,8 @@ class Face {
   
   void countUp() {
     timer++;
-    if (timer > 100) {
-      timer = 100;
+    if (timer > 40) {
+      timer = 40;
     }
     checkState();
   }
@@ -40,7 +40,7 @@ class Face {
   void checkState() {
     if (timer == 0) {
       state = LOST;
-    } else if (timer >= 80) {
+    } else if (timer >= 30) {
       state = ENABLED;
     } else if (timer >= 20) {
       state = LOOKING;
@@ -57,6 +57,7 @@ class Face {
   }
   
   void display() {
+    noFill();
     stroke(0, 255, 64);
     rect(r.x, r.y, r.width, r.height);
     
@@ -73,7 +74,5 @@ class Face {
       fill(0, 64, 255, 128);
       rect(r.x, r.y, r.width, r.height);
     }
-    
-    noFill();
   }
 }

@@ -9,17 +9,20 @@ Capture capture;
 OpenCV opencv;
 
 int faceCount = 0;
-int scl = 2;
+int enabledCount;
+int scl = 1;
 
 void setup() {
-  size(640, 480);
-  frameRate(15);
+  size(1280, 720);
+  frameRate(1);
   strokeWeight(2);
+  textSize(26);
   
   faceList = new ArrayList<Face>();
   
   // (640, 480)の解像度で処理するとMBP処理落ちするのでscl分小さく
-  capture = new Capture(this, width/scl, height/scl);
+  // TODO: 1280 * 720用に調整 fps: 1
+  capture = new Capture(this, width/scl, height/scl, 15);
   opencv = new OpenCV(this, width/scl, height/scl);
   opencv.loadCascade(OpenCV.CASCADE_FRONTALFACE);
   
@@ -43,9 +46,14 @@ void draw() {
   
   for (Face fl: faceList) {
     fl.display();
+    if (fl.state == fl.ENABLED) {
+      enabledCount++;
+    }
   }
-  System.out.println(frameRate + " " +faceList.size());
   
+  fill(255, 255, 255);
+  text("FPS:" + frameRate + "  faceList:" + faceList.size() + "  enabledCount:" + enabledCount, 10, 30);
+  enabledCount = 0;
 }
 
 void detectFaces() {
